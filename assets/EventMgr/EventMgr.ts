@@ -5,6 +5,8 @@ const { ccclass, property ,executionOrder} = _decorator;
 @executionOrder(-1)
 export class EventMgr extends Component {
 
+    @property isDebug:boolean=false;
+
     private static inst: EventMgr = null;
 
     static get Inst() {
@@ -15,12 +17,18 @@ export class EventMgr extends Component {
     protected onLoad(): void {
         if (EventMgr.inst === null) {
             EventMgr.inst = this;
+            console.log("eventMgr onload");
         }
-        console.log("eventMgr onload");
     }
 
 
     public addEvent(type,func,target){
+
+        /*
+        if(type==="GAME_START"){
+            console.log("addEvent and game start");
+        }*/
+
         if(type in this.eventDict){
             this.eventDict[type].on(type,func,target);
         }else {
@@ -44,7 +52,23 @@ export class EventMgr extends Component {
         }
     }
 
+    public clearEvent(){
+        this.eventDict={};
+    }
+    
+    debugDict(type:string){
+        console.log("debugDict:"+type);
+        for(let key in this.eventDict){
+            console.log("key:"+key);
+            console.log("value:"+this.eventDict[key]);
+        }
+    }
+
     public sendEvent(type,...arg){
+        if(this.isDebug){
+        //    this.debugDict(type);
+        }
+
         if(type in this.eventDict){
             this.eventDict[type].emit(type,...arg);
         }
