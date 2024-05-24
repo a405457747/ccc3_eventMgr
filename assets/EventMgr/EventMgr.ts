@@ -1,7 +1,8 @@
 import { _decorator, Component, Node,EventTarget } from 'cc';
-const { ccclass, property } = _decorator;
+const { ccclass, property ,executionOrder} = _decorator;
 
 @ccclass('EventMgr')
+@executionOrder(-1)
 export class EventMgr extends Component {
 
     private static inst: EventMgr = null;
@@ -15,7 +16,7 @@ export class EventMgr extends Component {
         if (EventMgr.inst === null) {
             EventMgr.inst = this;
         }
-
+        console.log("eventMgr onload");
     }
 
 

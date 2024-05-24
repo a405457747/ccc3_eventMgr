@@ -4,6 +4,9 @@ const { ccclass, property } = _decorator;
 
 @ccclass('N1')
 export class N1 extends Component {
+    protected onLoad(): void {
+        console.log("n1 onload");
+    }
     start() {
         EventMgr.Inst.addEvent("wok",this.wok,this);
     }
