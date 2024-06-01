@@ -14,6 +14,7 @@ export class EventMgr extends Component {
     }
 
     eventDict:{[key:string]:EventTarget}={}
+    eventDict2:{}={};
     protected onLoad(): void {
         if (EventMgr.inst === null) {
             EventMgr.inst = this;
@@ -31,16 +32,22 @@ export class EventMgr extends Component {
 
         if(type in this.eventDict){
             this.eventDict[type].on(type,func,target);
+
+            this.eventDict2[type]+=1;
         }else {
             let obj = new EventTarget();
             obj.on(type,func,target);
             this.eventDict[type]=obj;
+
+            this.eventDict2[type]=1;
         }
     }
 
     public removeEvent(type,func,target){
         if(type in this.eventDict){
             this.eventDict[type].off(type,func,target);
+
+            this.eventDict2[type]-=1;
         }else {
             console.log("WAR: removeEvent don't have the event type");
         }
@@ -49,25 +56,28 @@ export class EventMgr extends Component {
     public delEvent(type){
         if(type in this.eventDict){
            delete this.eventDict[type];
+
+           delete this.eventDict2[type];
         }
     }
 
     public clearEvent(){
         this.eventDict={};
+        this.eventDict2={};
     }
     
-    debugDict(type:string){
+    debugDict(type?:string){
+        /*
         console.log("debugDict:"+type);
         for(let key in this.eventDict){
             console.log("key:"+key);
             console.log("value:"+this.eventDict[key]);
         }
+        */
+       console.log(JSON.stringify(this.eventDict2));
     }
 
     public sendEvent(type,...arg){
-        if(this.isDebug){
-        //    this.debugDict(type);
-        }
 
         if(type in this.eventDict){
             this.eventDict[type].emit(type,...arg);

@@ -9,8 +9,9 @@ export class N3 extends Component {
     }
 
     update(deltaTime: number) {
-        EventMgr.Inst.sendEvent("wok",{a:33});
+    
         this.enabled=false;
+       // EventMgr.Inst.debugDict();
     }
 }
 
